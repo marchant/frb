@@ -209,6 +209,17 @@ describe("bind", function () {
         expect(object.has).toEqual(true);
         expect(object.set.slice()).toEqual([1, 3, 2]);
 
+        //Benoit
+        //Todo: Add rangeAdd() to add the value of the right expression
+        //Todo: Add rangeRemove() to remove the value of the right expression
+        var target = {toMany:[0]};
+        var cancel2 = bind(target, "toMany.rangeContent()", {
+            "<-": "",
+            "source": [1, 2, 3]
+        });
+        expect(target.toMany).toEqual([1, 2, 3]);
+
+
     });
 
     describe("map", function () {
