@@ -93,6 +93,48 @@ describe("assign", function () {
         expect(object.array).toEqual([1, 2, 3]);
     });
 
+    /*
+        New Spec to experiment how to mutate an array via frb
+        add: spec is clear, append at the end
+        worth adding if we splice?
+    */
+    it("should be able to add into the content of a ranged collection", function () {
+        var object = {};
+        object.array = [0, 1, 2, 3];
+        assign(object, "array.rangeAdd()", [4, 5, 6]);
+        expect(object.array).toEqual([0, 1, 2, 3, 4, 5, 6]);
+    });
+
+    /*
+        New Spec to experiment how to mutate an array via frb
+        remove: is a bit muddy, no primitive in js to do so, it would mean remove all occurences?
+        worth adding?
+    */
+    it("should be able to remove into the content of a ranged collection", function () {
+        var object = {};
+        object.array = [0, 1, 2, 3, 4, 5, 6];
+        assign(object, "array.rangeRemove()", [4, 5, 6]);
+        expect(object.array).toEqual([0, 1, 2, 3]);
+    });
+
+    /*
+        New Spec to experiment how to mutate an array via frb
+        splice method in JS Array:
+        let arrDeletedItems = array.splice(start[, deleteCount[, item1[, item2[, ...]]]])
+        is the most efficient primitive available as it does deletion and addition in one call.
+
+        when start is 0, and deleteCount is 0, it's basically equivallent to the current rangeContent().
+        So, it might be easier to add splice and make rangeContent() work on top of it.
+        rangeContent() take as argument the whole scope, so for a splice, the scope needs to contain, start, deleteCount
+    */
+    it("should be able to splice into the content of a ranged collection", function () {
+        var object = {};
+        object.array = [0, 1, 2, 3, 4, 5, 6];
+        assign(object, "array.rangeSplice()", [2 /*start*/, 3 /*deleteCount*/, 7, 8, 9]);
+        expect(object.array).toEqual([0, 1, 2, 3, 6, 7, 8, 9]);
+    });
+
+
     it("should be able to assign into the content of a mapped array", function () {
         var object = {};
         assign(object, "array.mapContent()", [1, 2, 3]);
